@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <TextView
+        style="@style/Base.TextAppearance.AppCompat.Title"
+        android:layout_width="match_parent"
+        android:layout_marginBottom="8dp"
+        android:layout_height="wrap_content"
+        android:text="Add Reward" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="Set new reward for a player. Provide name and reward." />
+
+    <EditText
+        android:id="@+id/participant_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Participant name" />
+
+    <EditText
+        android:id="@+id/reward"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Reward" />
+</LinearLayout>

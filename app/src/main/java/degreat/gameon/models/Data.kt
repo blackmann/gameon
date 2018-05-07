@@ -11,4 +11,5 @@ class Participant(val name: String,
                   var points: Int = 0)
 
 class Reward(val name: String,
-             val reward: String)
+             val reward: String,
+             val on: Date = Date())

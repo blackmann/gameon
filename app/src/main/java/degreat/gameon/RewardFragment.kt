@@ -2,15 +2,52 @@ package degreat.gameon
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import degreat.gameon.adapters.RewardAdapter
+import degreat.gameon.models.Reward
+import kotlinx.android.synthetic.main.dialog_add_reward.view.*
+import kotlinx.android.synthetic.main.fragment_tournament.*
 
-class RewardFragment: Fragment() {
+class RewardFragment : Fragment() {
+
+    private val adapter = RewardAdapter()
+
+    private val rewards = ArrayList<Reward>()
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_tournament, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        add.setOnClickListener { showAddTournamentDialog() }
+
+        items.adapter = adapter
+    }
+
+    private fun showAddTournamentDialog() {
+        if (context == null) return
+
+        val contentView = LayoutInflater.from(context)
+                .inflate(R.layout.dialog_add_reward, null, false)
+
+        val dialog = AlertDialog.Builder(context!!)
+                .setView(contentView)
+                .setPositiveButton("Add", { d, _ ->
+                    val title = contentView.participant_name.text.toString()
+                    val reward = contentView.reward.text.toString()
+                    if (!title.trim().isEmpty() || !reward.trim().isEmpty()) {
+                        rewards.add(Reward(title, reward))
+                        adapter.set(rewards)
+                    }
+                })
+                .create()
+
+        dialog.show()
     }
 }
