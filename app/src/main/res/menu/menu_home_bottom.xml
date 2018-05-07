@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="@string/tournaments"
+        android:id="@+id/tournament"
+        android:icon="@drawable/ic_tournament"/>
+
+    <item android:title="@string/reward"
+        android:id="@+id/reward"
+        android:icon="@drawable/ic_reward"/>
+</menu>

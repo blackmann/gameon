@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">GameOn</string>
+    <string name="image">image</string>
+    <string name="reward">Reward</string>
+    <string name="tournaments">Tournaments</string>
+    <string name="date_filter">Date Filter</string>
+    <string name="about">About</string>
+</resources>
