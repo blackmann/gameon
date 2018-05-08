@@ -1,10 +1,16 @@
 package degreat.gameon
 
+import android.arch.lifecycle.MutableLiveData
+import android.arch.lifecycle.ViewModel
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
+import degreat.gameon.arch.SingleLiveEvent
+import degreat.gameon.models.DB
+import degreat.gameon.models.Reward
+import degreat.gameon.models.Tournament
 import kotlinx.android.synthetic.main.activity_main.*
 
 class Home : AppCompatActivity() {
@@ -39,7 +45,7 @@ class Home : AppCompatActivity() {
     }
 
     private fun showPage(page: Int) {
-        pages.setCurrentItem(page, false)
+        pages.currentItem = page
 
         when (page) {
             0 -> title = "Tournaments"
@@ -50,5 +56,39 @@ class Home : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_home, menu)
         return super.onCreateOptionsMenu(menu)
+    }
+
+    class HomeVM : ViewModel() {
+
+        private val db = DB()
+
+        // events
+        val showLoadingRewards = SingleLiveEvent<Boolean>()
+        val showLoadingTs = SingleLiveEvent<Boolean>()
+
+        val tournaments = MutableLiveData<ArrayList<Tournament>>()
+        val rewards = MutableLiveData<ArrayList<Reward>>()
+
+        fun fetchTournaments() {
+            showLoadingTs.value = true
+            tournaments.value = db.fetchTournaments()
+            showLoadingTs.value = false
+        }
+
+        fun fetchRewards() {
+            showLoadingRewards.value = true
+            rewards.value = db.fetchRewards()
+            showLoadingRewards.value = false
+        }
+
+        fun addTournament(t: Tournament) {
+            db.save(t)
+            tournaments.value = db.tournaments
+        }
+
+        fun addReward(r: Reward) {
+            db.save(r)
+            rewards.value = db.rewards
+        }
     }
 }

@@ -1,5 +1,7 @@
 package degreat.gameon
 
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AlertDialog
@@ -15,7 +17,10 @@ class RewardFragment : Fragment() {
 
     private val adapter = RewardAdapter()
 
-    private val rewards = ArrayList<Reward>()
+    private val viewModel by lazy {
+        ViewModelProviders.of(activity as Home)
+                .get(Home.HomeVM::class.java)
+    }
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
@@ -28,6 +33,8 @@ class RewardFragment : Fragment() {
         add.setOnClickListener { showAddTournamentDialog() }
 
         items.adapter = adapter
+
+        viewModel.rewards.observe(this, Observer { adapter.set(it ?: arrayListOf()) })
     }
 
     private fun showAddTournamentDialog() {
@@ -41,13 +48,17 @@ class RewardFragment : Fragment() {
                 .setPositiveButton("Add", { d, _ ->
                     val title = contentView.participant_name.text.toString()
                     val reward = contentView.reward.text.toString()
-                    if (!title.trim().isEmpty() || !reward.trim().isEmpty()) {
-                        rewards.add(Reward(title, reward))
-                        adapter.set(rewards)
+                    if (!title.trim().isEmpty() && !reward.trim().isEmpty()) {
+                        viewModel.addReward(Reward(title, reward))
                     }
                 })
                 .create()
 
         dialog.show()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.fetchRewards()
     }
 }

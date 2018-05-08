@@ -44,8 +44,7 @@ class TournamentAdapter : RecyclerView.Adapter<TournamentAdapter.TViewHolder>() 
             tournament_title.text = "${tournament.title} •"
 
             containerView.setOnClickListener {
-                containerView.context.startActivity(Intent(containerView.context,
-                        TournamentDetail::class.java))
+                TournamentDetail.start(containerView.context, tournament.id)
             }
         }
     }

@@ -13,11 +13,11 @@ class ParticipantAdapter: RecyclerView.Adapter<ParticipantAdapter.PViewHolder>()
 
     private val participants = ArrayList<Participant>()
 
-    fun set(ps: ArrayList<Participant>) {
+    fun set(ps: List<Participant>) {
         participants.clear()
         participants.addAll(ps)
 
-        participants.sortWith(Comparator { t1, t2 -> t1.points - t2.points})
+        participants.sortWith(Comparator { t1, t2 -> t1.getPoints() - t2.getPoints()})
 
         notifyDataSetChanged()
     }
@@ -40,7 +40,7 @@ class ParticipantAdapter: RecyclerView.Adapter<ParticipantAdapter.PViewHolder>()
             RecyclerView.ViewHolder(containerView), LayoutContainer {
         fun bind(participant: Participant, position: Int) {
             containerView.participant_name.text = "$position      ${participant.name}"
-            containerView.points.text = participant.points.toString()
+            containerView.points.text = participant.points.get().toString()
         }
     }
 }

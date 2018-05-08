@@ -13,8 +13,7 @@
             android:theme="@style/NoActionBar">
 
         </activity>
-        <activity
-            android:name=".Home">
+        <activity android:name=".Home">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

@@ -1,9 +1,10 @@
 package degreat.gameon
 
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AlertDialog
-import android.support.v7.widget.DividerItemDecoration
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +16,11 @@ import kotlinx.android.synthetic.main.fragment_tournament.*
 class TournamentFragment : Fragment() {
 
     private val adapter = TournamentAdapter()
-    private val ts = arrayListOf(Tournament("Big Match 3"), Tournament("Big Match 5"))
+
+    private val viewModel by lazy {
+        ViewModelProviders.of(activity as Home)
+                .get(Home.HomeVM::class.java)
+    }
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
@@ -27,9 +32,9 @@ class TournamentFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         items.adapter = adapter
 
-        adapter.set(ts)
-
         add.setOnClickListener { showAddTournamentDialog() }
+
+        viewModel.tournaments.observe(this, Observer { adapter.set(it ?: arrayListOf()) })
     }
 
 
@@ -44,12 +49,16 @@ class TournamentFragment : Fragment() {
                 .setPositiveButton("Create", { d, _ ->
                     val title = contentView.tournament_title.text.toString()
                     if (!title.trim().isEmpty()) {
-                        ts.add(Tournament(title))
-                        adapter.set(ts)
+                        viewModel.addTournament(Tournament(title))
                     }
                 })
                 .create()
 
         dialog.show()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.fetchTournaments()
     }
 }
