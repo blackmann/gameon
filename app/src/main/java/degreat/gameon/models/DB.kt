@@ -49,6 +49,13 @@ class DB {
         }
     }
 
+    fun rename(p: Participant, nn: String) {
+        realm.beginTransaction()
+        p.name = nn
+        realm.copyToRealmOrUpdate(p)
+        realm.commitTransaction()
+    }
+
     fun getTournament(id: String): Tournament? {
         val t = tournaments.find { it.id == id }
         return t ?: realm.where(Tournament::class.java)
@@ -62,5 +69,24 @@ class DB {
             tournament.participants.add(p)
             realm.commitTransaction()
         }
+    }
+
+    fun increasePoints(p: Participant) {
+        realm.beginTransaction()
+        p.points.increment(1)
+        realm.commitTransaction()
+    }
+
+    fun decreasePoints(p: Participant) {
+        realm.beginTransaction()
+        p.points.decrement(1)
+        realm.commitTransaction()
+    }
+
+    fun deleteParticipant(p: Participant) {
+        realm.beginTransaction()
+        p.deleteFromRealm()
+
+        realm.commitTransaction()
     }
 }

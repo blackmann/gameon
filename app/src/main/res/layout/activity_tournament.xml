@@ -1,27 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    tools:context=".TournamentDetail">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/score_board"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".TournamentDetail">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/score_board"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+
+        <Button
+            android:id="@+id/add_participant"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            android:drawableStart="@drawable/ic_add"
+            android:drawableTint="@android:color/white"
+            android:text="Add Participant"
+            android:textAllCaps="false" />
+
+        <TextView
+            android:textSize="15sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:alpha="0.6"
+            android:text="Long press on a player's name to add, reduce points or delete."
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"/>
+    </LinearLayout>
+
+    <include
+        layout="@layout/view_participant_menu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
-
-    <Button
-        android:id="@+id/add_participant"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        android:drawableStart="@drawable/ic_add"
-        android:drawableTint="@android:color/white"
-        android:text="Add Participant"
-        android:textAllCaps="false" />
-</LinearLayout>
+        android:layout_gravity="bottom" />
+</android.support.design.widget.CoordinatorLayout>

@@ -1,15 +1,15 @@
 package degreat.gameon.adapters
 
-import android.content.Intent
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.github.marlonlom.utilities.timeago.TimeAgo
 import degreat.gameon.R
-import degreat.gameon.models.Tournament
 import degreat.gameon.TournamentDetail
+import degreat.gameon.models.Tournament
 import kotlinx.android.extensions.LayoutContainer
-import kotlinx.android.synthetic.main.view_tournament.*
+import kotlinx.android.synthetic.main.view_tournament.view.*
 import java.util.*
 
 class TournamentAdapter : RecyclerView.Adapter<TournamentAdapter.TViewHolder>() {
@@ -37,11 +37,12 @@ class TournamentAdapter : RecyclerView.Adapter<TournamentAdapter.TViewHolder>() 
 
     override fun getItemCount(): Int = tournaments.size
 
-    class TViewHolder(override val containerView: View) :
+    inner class TViewHolder(override val containerView: View) :
             RecyclerView.ViewHolder(containerView), LayoutContainer {
 
         fun bind(tournament: Tournament) {
-            tournament_title.text = "${tournament.title} •"
+            containerView.tournament_title.text = "${tournament.title} •"
+            containerView.ago.text = "  ${TimeAgo.using(tournament.startOn.time)}"
 
             containerView.setOnClickListener {
                 TournamentDetail.start(containerView.context, tournament.id)

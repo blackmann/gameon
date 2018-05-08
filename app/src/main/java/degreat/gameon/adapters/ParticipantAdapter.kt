@@ -9,19 +9,24 @@ import degreat.gameon.models.Participant
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.view_participant.view.*
 
-class ParticipantAdapter: RecyclerView.Adapter<ParticipantAdapter.PViewHolder>() {
+class ParticipantAdapter : RecyclerView.Adapter<ParticipantAdapter.PViewHolder>() {
 
     private val participants = ArrayList<Participant>()
+
+    private var participantSelect: ParticipantSelect? = null
 
     fun set(ps: List<Participant>) {
         participants.clear()
         participants.addAll(ps)
 
-        participants.sortWith(Comparator { t1, t2 -> t1.getPoints() - t2.getPoints()})
+        arrange()
+    }
+
+    fun arrange() {
+        participants.sortWith(Comparator { t1, t2 -> t2.getPoints() - t1.getPoints() })
 
         notifyDataSetChanged()
     }
-
 
     override fun getItemCount(): Int = participants.size
 
@@ -33,14 +38,28 @@ class ParticipantAdapter: RecyclerView.Adapter<ParticipantAdapter.PViewHolder>()
     }
 
     override fun onBindViewHolder(holder: PViewHolder, position: Int) {
-        holder.bind(participants[position], position+1)
+        holder.bind(participants[position], position + 1)
     }
 
-    class PViewHolder(override val containerView: View) :
+    fun setOnSelect(ps: ParticipantSelect) {
+        this.participantSelect = ps
+    }
+
+    inner class PViewHolder(override val containerView: View) :
             RecyclerView.ViewHolder(containerView), LayoutContainer {
         fun bind(participant: Participant, position: Int) {
             containerView.participant_name.text = "$position      ${participant.name}"
             containerView.points.text = participant.points.get().toString()
+
+            containerView.setOnLongClickListener {
+                participantSelect?.onSelect(participant)
+                return@setOnLongClickListener true
+            }
         }
+    }
+
+
+    interface ParticipantSelect {
+        fun onSelect(p: Participant)
     }
 }
