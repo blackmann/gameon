@@ -13,9 +13,14 @@ import degreat.gameon.models.Tournament
 import kotlinx.android.synthetic.main.dialog_add_tournament.view.*
 import kotlinx.android.synthetic.main.fragment_tournament.*
 
-class TournamentFragment : Fragment() {
+class TournamentFragment : Fragment(), TournamentAdapter.OnTournamentAction {
+    override fun onDelete(t: Tournament) {
+        viewModel.deleteTournament(t)
+    }
 
-    private val adapter = TournamentAdapter()
+    private val adapter = TournamentAdapter().apply {
+        setOnTournamentAction(this@TournamentFragment)
+    }
 
     private val viewModel by lazy {
         ViewModelProviders.of(activity as Home)

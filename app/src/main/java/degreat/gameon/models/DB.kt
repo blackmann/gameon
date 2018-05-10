@@ -89,4 +89,14 @@ class DB {
 
         realm.commitTransaction()
     }
+
+    fun deleteTournament(t: Tournament) {
+        val dt = realm.where(Tournament::class.java)
+                .equalTo("id", t.id).findFirst()
+        if (dt != null) {
+            realm.beginTransaction()
+            dt.deleteFromRealm()
+            realm.commitTransaction()
+        }
+    }
 }

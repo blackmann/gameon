@@ -42,8 +42,6 @@ class Home : AppCompatActivity() {
 
             return@setOnNavigationItemSelectedListener true
         }
-
-
     }
 
     private fun showPage(page: Int) {
@@ -98,6 +96,11 @@ class Home : AppCompatActivity() {
         fun addReward(r: Reward) {
             db.save(r)
             rewards.value = db.rewards
+        }
+
+        fun deleteTournament(t: Tournament) {
+            db.deleteTournament(t)
+            tournaments.value = db.fetchTournaments()
         }
     }
 }

@@ -1,6 +1,8 @@
 package degreat.gameon.adapters
 
+import android.support.v7.widget.PopupMenu
 import android.support.v7.widget.RecyclerView
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +17,8 @@ import java.util.*
 class TournamentAdapter : RecyclerView.Adapter<TournamentAdapter.TViewHolder>() {
 
     private val tournaments = ArrayList<Tournament>()
+
+    private var onTournamentAction : OnTournamentAction? = null
 
     fun set(t: ArrayList<Tournament>) {
         tournaments.clear()
@@ -35,6 +39,10 @@ class TournamentAdapter : RecyclerView.Adapter<TournamentAdapter.TViewHolder>() 
         return TViewHolder(containerView)
     }
 
+    fun setOnTournamentAction(ota: OnTournamentAction) {
+        this.onTournamentAction = ota
+    }
+
     override fun getItemCount(): Int = tournaments.size
 
     inner class TViewHolder(override val containerView: View) :
@@ -47,6 +55,28 @@ class TournamentAdapter : RecyclerView.Adapter<TournamentAdapter.TViewHolder>() 
             containerView.setOnClickListener {
                 TournamentDetail.start(containerView.context, tournament.id)
             }
+
+            containerView.setOnLongClickListener {
+                val popUpMenu = PopupMenu(containerView.context, containerView, Gravity.END)
+                popUpMenu.inflate(R.menu.menu_tournament)
+
+                popUpMenu.setOnMenuItemClickListener {
+                    if (it?.itemId == R.id.delete) {
+                        onTournamentAction?.onDelete(tournament)
+                    }
+
+                    return@setOnMenuItemClickListener true
+                }
+
+                popUpMenu.show()
+
+                return@setOnLongClickListener true
+            }
+
         }
+    }
+
+    interface OnTournamentAction {
+        fun onDelete(t: Tournament)
     }
 }
