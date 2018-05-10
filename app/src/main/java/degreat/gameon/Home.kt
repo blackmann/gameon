@@ -2,11 +2,13 @@ package degreat.gameon
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
+import android.view.MenuItem
 import degreat.gameon.arch.SingleLiveEvent
 import degreat.gameon.models.DB
 import degreat.gameon.models.Reward
@@ -56,6 +58,13 @@ class Home : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_home, menu)
         return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.about -> startActivity(Intent(this, About::class.java))
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     class HomeVM : ViewModel() {
